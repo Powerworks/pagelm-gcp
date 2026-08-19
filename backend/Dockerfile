@@ -8,7 +8,7 @@ FROM base AS builder
 
 COPY package*.json ./
 
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 COPY backend/ ./backend/
 
@@ -21,6 +21,8 @@ COPY --from=builder /app/backend/dist ./backend/dist
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/node_modules ./node_modules
 
-EXPOSE 5000
+EXPOSE 8080
+ENV PORT=8080
+ENV HOST=0.0.0.0
 
 CMD ["npm", "start"]

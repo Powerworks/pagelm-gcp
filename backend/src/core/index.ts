@@ -1,10 +1,14 @@
 import cors from 'cors';
+import fs from 'fs'
 import path from 'path'
 import server from '../utils/server/server'
 import { registerRoutes } from './router'
 import { loggerMiddleware } from './middleware'
 
-process.loadEnvFile(path.resolve(process.cwd(), '.env'))
+const envPath = path.resolve(process.cwd(), '.env')
+if (fs.existsSync(envPath)) {
+  process.loadEnvFile(envPath)
+}
 
 const app = server()
 

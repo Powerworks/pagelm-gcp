@@ -1,6 +1,10 @@
+import fs from 'fs'
 import path from 'path'
 
-process.loadEnvFile(path.resolve(process.cwd(), '.env'))
+const envPath = path.resolve(process.cwd(), '.env')
+if (fs.existsSync(envPath)) {
+  process.loadEnvFile(envPath)
+}
 
 export const config = {
   db_mode: process.env.db_mode || 'json',

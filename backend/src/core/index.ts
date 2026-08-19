@@ -13,13 +13,25 @@ if (fs.existsSync(envPath)) {
 const app = server()
 
 app.use(loggerMiddleware)
+
+
 app.use(cors({
   origin: "*",
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
+
+const allowedOrigin = process.env.FRONTEND_URL || '*';
+
+app.use(cors({
+  origin: allowedOrigin === '*' ? '*' : [allowedOrigin, 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 app.options('*', cors());
+
 app.use(app.serverStatic("/storage", "./storage"))
 
 registerRoutes(app)

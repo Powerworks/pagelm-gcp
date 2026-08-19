@@ -1,5 +1,5 @@
 node_modules
-dist
+!frontend/dist
 storage/*
 !storage/.gitkeep
 .env

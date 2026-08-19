@@ -160,6 +160,82 @@ Cloud Run URL is a free LLM-relay for bots.
   means the build isn't fully lockfile-reproducible. Not a problem for a
   personal deploy; flagging in case it causes confusion later.
 
+## Frontend deployment: DONE
+
+The frontend is now live as its own Cloud Run service (`pagelm-frontend`,
+region `europe-west1`), built as a static Vite bundle served via Nginx —
+separate from the backend containerization work in Phase 1 above.
+
+- **Live URL**: https://pagelm-frontend-tietmaklpq-ew.a.run.app
+- **GCP project**: `pagelm-gcp-1787110066`
+- **Deploy script**: `./deploy.fish` (fish shell; builds via Cloud Build,
+  deploys via `gcloud run deploy`, prints the resulting URL)
+
+### Frontend Dockerfile changes
+
+`frontend/Dockerfile` was reworked for Cloud Run + pnpm v10:
+
+- Base image must be **`node:22-alpine`** or newer. pnpm v10 requires
+  Node >= 22.13; on `node:20-alpine` it fails with
+  `Error [ERR_UNKNOWN_BUILTIN_MODULE]: No such built-in module: node:sqlite`.
+- `pnpm install` must use **`--ignore-scripts`**. pnpm v10's security model
+  blocks lifecycle/build scripts for native packages (e.g. `esbuild`) during
+  non-interactive container installs, failing with
+  `[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: esbuild@...`. The
+  precompiled `esbuild` binary still works fine when invoked via
+  `pnpm exec vite build` even without its install script having run.
+- Final stage copies the build output into `nginx:alpine` and serves it with
+  a custom `frontend/nginx.conf` (see below) on port 80.
+- `frontend/pnpm-workspace.yaml` was added — needed for pnpm v10 to resolve
+  the workspace correctly during the containerized install.
+
+### `frontend/nginx.conf` — SPA routing fix
+
+A single-page React app needs an Nginx rewrite fallback, or refreshing any
+non-root route (e.g. `/dashboard`) 404s. Config:
+
+```
+server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+### Org policy gotcha: `iam.allowedPolicyMemberDomains`
+
+Deploying with `--allow-unauthenticated`, or running
+`gcloud run services add-iam-policy-binding ... --member=allUsers`, failed
+with:
+
+```
+FAILED_PRECONDITION: One or more users named in the policy do not belong
+to a permitted customer, perhaps due to an organization policy.
+```
+
+**Cause**: the parent org (`hadisfarhealth.com`) enforces Domain Restricted
+Sharing by default, which blocks IAM bindings to `allUsers`/external users.
+
+**Fix**: in GCP Console → IAM & Admin → Organization Policies, find
+`Domain restricted sharing (iam.allowedPolicyMemberDomains)`, set the
+resource context to this project, and override the parent policy:
+"Applies to: Override parent's policy", "Policy enforcement: Replace",
+add a rule with "Policy values: Allow all", then Save. **IAM policy changes
+take 2–5 minutes to propagate** across Cloud Run controllers — retry the
+binding after waiting, don't assume it failed permanently.
+
+Note this cuts against Phase 4 above (which calls for *no*
+`--allow-unauthenticated` and IAM-gated access only) — the frontend was
+deployed publicly as a pragmatic shortcut this session. Worth revisiting
+before this is treated as done end-to-end: decide whether the frontend
+should also move behind IAP/`run.invoker`-only access, or whether public
+frontend + gated backend is the intended final shape.
+
 ## gcloud CLI gotchas hit this session
 
 Worth knowing before running more `gcloud`/`gcloud builds submit` commands —

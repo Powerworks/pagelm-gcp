@@ -1,41 +1,22 @@
-# base
-FROM node:22.16.0-alpine AS base
-
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-
-RUN npm i -g pnpm@10.13.1
-
+# --- Stage 1: Build Vite App ---
+FROM node:22-alpine AS builder
 WORKDIR /app
 
-# deps
-FROM base AS deps
+# Enable pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-COPY package*.json pnpm*.yaml ./
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
 
-RUN pnpm i --frozen-lockfile
+# Bypass interactive build script approvals in pnpm v10
+RUN pnpm install --ignore-scripts
 
-# build
-FROM base AS build
+COPY frontend/ ./
+RUN pnpm exec vite build
 
-ARG VITE_BACKEND_URL
-ARG VITE_TIMEOUT
-ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
-ENV VITE_TIMEOUT=$VITE_TIMEOUT
+# --- Stage 2: Serve via Nginx ---
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-RUN pnpm build
-
-# runtime
-FROM base AS runtime
-
-COPY --from=build /app/dist ./dist
-
-RUN npm install -g serve
-
-EXPOSE 8080
-ENV PORT=8080
-
-CMD ["sh", "-c", "serve -s dist -l tcp://0.0.0.0:${PORT}"]
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

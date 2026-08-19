@@ -160,6 +160,41 @@ Cloud Run URL is a free LLM-relay for bots.
   means the build isn't fully lockfile-reproducible. Not a problem for a
   personal deploy; flagging in case it causes confusion later.
 
+## gcloud CLI gotchas hit this session
+
+Worth knowing before running more `gcloud`/`gcloud builds submit` commands —
+these cost real time to rediscover:
+
+- **Shell is fish, not bash — bash heredocs (`<<EOF ... EOF`) don't work.**
+  Piping a multiline string into a `gcloud` command (e.g. a YAML config) via
+  a heredoc silently fails or hangs in fish with no useful error. Write the
+  content to a temp file first (`Write`/`printf`), then pass `--file=path` or
+  redirect from that file instead of trying to inline it.
+- **Grant IAM roles upfront on a fresh project, don't wait for failures to
+  reveal them.** A new project's default service accounts do *not* have the
+  roles needed for a Cloud Build → Artifact Registry → Cloud Run pipeline.
+  Grant these before the first build attempt (saves a full failed-build
+  cycle each time one's missing):
+  - Cloud Build SA (`$BUILD_SA`, `<PROJECT_NUMBER>@cloudbuild.gserviceaccount.com`):
+    `roles/artifactregistry.writer`, `roles/iam.serviceAccountUser`,
+    `roles/run.admin` (if Cloud Build itself deploys to Cloud Run).
+  - Compute default SA (`$COMPUTE_SA`,
+    `<PROJECT_NUMBER>-compute@developer.gserviceaccount.com`, used at Cloud
+    Run runtime unless a dedicated SA is set up per Phase 3):
+    `roles/storage.objectAdmin` (for the GCS FUSE mount in Phase 2), plus
+    Secret Manager accessor once Phase 3's secrets exist.
+- **Write a `.gcloudignore` before the first `gcloud builds submit`, or the
+  upload hangs/fails.** Without one, Cloud Build tars up the entire working
+  tree — including `.git`, `node_modules`, `dist` — which can be gigabytes
+  and causes multi-minute uploads or timeouts. One now exists at repo root
+  excluding `.git`, `.github`, `node_modules`, `dist`, `storage`.
+- **Co-locate every resource in one region** — Artifact Registry repo, Cloud
+  Build, GCS bucket(s), and both Cloud Run services should all use the same
+  region to avoid cross-region latency and (for some resource pairs)
+  outright errors. `europe-west1` (Belgium) or `europe-west2` (London) are
+  reasonable defaults if no other constraint applies — pick one region and
+  use it everywhere, don't let it default per-command.
+
 ## Quick reference
 
 - Brief: [`pagelm-gcp-brief.md`](./pagelm-gcp-brief.md)

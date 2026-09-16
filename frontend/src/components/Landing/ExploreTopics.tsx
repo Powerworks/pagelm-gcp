@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { chatJSON } from "../../lib/api";
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { chatJSON } from '../../lib/api';
 
 export default function ExploreTopics() {
   const [open, setOpen] = useState(false);
@@ -9,16 +9,15 @@ export default function ExploreTopics() {
 
   const moreRows = useMemo(
     () => [
-      ["History", "Geography", "Music"],
-      ["Art", "Technology", "Philosophy"],
+      ['History', 'Geography', 'Music'],
+      ['Art', 'Technology', 'Philosophy'],
     ],
     []
   );
 
   const imgSrc = (title: string) => `/pictures/${encodeURIComponent(title.toLocaleLowerCase())}.png`;
 
-  const promptFor = (topic: string) =>
-    `Give me a clear, beginner-friendly lesson on ${topic}`;
+  const promptFor = (topic: string) => `Give me a clear, beginner-friendly lesson on ${topic}`;
 
   const startTopic = async (title: string) => {
     if (busy) return;
@@ -41,8 +40,8 @@ export default function ExploreTopics() {
       disabled={busy}
       className={`w-full h-48 relative rounded-3xl border border-stone-900 bg-stone-950 
                   hover:scale-105 transition-transform duration-200 ease-out 
-                  focus:outline-none focus:ring-2 focus:ring-stone-700 disabled:opacity-60 ${extra || ""}`}
-      title={busy ? "Starting…" : `Learn ${title}`}
+                  focus:outline-none focus:ring-2 focus:ring-stone-700 disabled:opacity-60 ${extra || ''}`}
+      title={busy ? 'Starting…' : `Learn ${title}`}
     >
       <img src={imgSrc(title)} alt={title} className="w-full h-full rounded-3xl object-cover" draggable={false} />
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-transparent to-black" />
@@ -52,15 +51,18 @@ export default function ExploreTopics() {
 
   return (
     <div className="mt-auto pb-4 pt-4 relative">
-      <div className="w-fit flex flex-col items-center mx-auto mb-8 cursor-pointer select-none" onClick={() => setOpen((v) => !v)}>
+      <div
+        className="w-fit flex flex-col items-center mx-auto mb-8 cursor-pointer select-none"
+        onClick={() => setOpen(v => !v)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
           className="size-6"
           style={{
-            transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
           }}
         >
           <path
@@ -69,7 +71,7 @@ export default function ExploreTopics() {
             clipRule="evenodd"
           />
         </svg>
-        <span className="text-sm">{busy ? "Starting…" : "EXPLORE TOPICS"}</span>
+        <span className="text-sm">{busy ? 'Starting…' : 'EXPLORE TOPICS'}</span>
       </div>
 
       <div className="w-full max-w-4xl mx-auto overflow-hidden">
@@ -82,14 +84,14 @@ export default function ExploreTopics() {
         <div
           className="overflow-hidden"
           style={{
-            transition: "max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-            maxHeight: open ? 1000 : 0
+            transition: 'max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+            maxHeight: open ? 1000 : 0,
           }}
         >
           {moreRows.map((row, i) => (
             <div key={i} className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
               {row.map((title, j) => (
-                <Card key={title} title={title} extra={j === 2 ? "col-span-1 sm:col-span-2 lg:col-span-1" : ""} />
+                <Card key={title} title={title} extra={j === 2 ? 'col-span-1 sm:col-span-2 lg:col-span-1' : ''} />
               ))}
             </div>
           ))}
@@ -99,8 +101,8 @@ export default function ExploreTopics() {
       <div
         className="absolute w-full h-full bottom-0 bg-gradient-to-b from-transparent to-black/80 pointer-events-none"
         style={{
-          transition: "opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-          opacity: open ? 0 : 1
+          transition: 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+          opacity: open ? 0 : 1,
         }}
       />
     </div>

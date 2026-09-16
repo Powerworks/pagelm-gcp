@@ -1,6 +1,6 @@
-import { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } from '@langchain/google-genai'
-import { wrapChat } from './util'
-import type { MkLLM, MkEmb, EmbeddingsLike } from './types'
+import { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
+import { wrapChat } from './util';
+import type { MkLLM, MkEmb, EmbeddingsLike } from './types';
 
 export const makeLLM: MkLLM = (cfg: any) => {
   const m = new ChatGoogleGenerativeAI({
@@ -10,13 +10,13 @@ export const makeLLM: MkLLM = (cfg: any) => {
     topP: 0.9,
     topK: 40,
     maxOutputTokens: cfg.max_tokens || 16384,
-  })
-  return wrapChat(m)
-}
+  });
+  return wrapChat(m);
+};
 
 export const makeEmbeddings: MkEmb = (cfg: any): EmbeddingsLike => {
   return new GoogleGenerativeAIEmbeddings({
     model: cfg.gemini_embed_model || 'text-embedding-004',
     apiKey: cfg.gemini || process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY,
-  })
-}
+  });
+};

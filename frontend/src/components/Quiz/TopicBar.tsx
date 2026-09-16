@@ -17,7 +17,7 @@ export default function TopicBar({
       <div className="flex flex-col sm:flex-row gap-3 items-stretch">
         <input
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={e => onChange(e.target.value)}
           placeholder="Enter a topic to generate a quiz (e.g., Special Relativity)"
           className="flex-1 bg-stone-950 border border-stone-900 rounded-3xl px-5 py-3 text-stone-100 placeholder-stone-500 outline-none"
         />
@@ -29,7 +29,15 @@ export default function TopicBar({
           {isLoading ? (
             <>
               <svg className="size-4 animate-spin" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" className="opacity-25" />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                  className="opacity-25"
+                />
                 <path d="M4 12a8 8 0 0 1 8-8" className="opacity-75" fill="currentColor" />
               </svg>
               Generating…

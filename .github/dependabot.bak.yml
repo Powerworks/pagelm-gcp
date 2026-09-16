@@ -1,37 +1,37 @@
 version: 2
 updates:
   # Enable version updates for npm in root
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
 
   # Enable version updates for npm in /frontend
-  - package-ecosystem: "npm"
-    directory: "/frontend"
+  - package-ecosystem: 'npm'
+    directory: '/frontend'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
 
   # Enable version updates for Docker in root
-  - package-ecosystem: "docker"
-    directory: "/"
+  - package-ecosystem: 'docker'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
 
   # Enable version updates for Docker in /frontend
-  - package-ecosystem: "docker"
-    directory: "/frontend"
+  - package-ecosystem: 'docker'
+    directory: '/frontend'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
 
   # Enable version updates for Docker in /backend
-  - package-ecosystem: "docker"
-    directory: "/backend"
+  - package-ecosystem: 'docker'
+    directory: '/backend'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
 
   # Enable version updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'

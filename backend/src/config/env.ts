@@ -1,9 +1,9 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
 
-const envPath = path.resolve(process.cwd(), '.env')
+const envPath = path.resolve(process.cwd(), '.env');
 if (fs.existsSync(envPath)) {
-  process.loadEnvFile(envPath)
+  process.loadEnvFile(envPath);
 }
 
 export const config = {
@@ -31,7 +31,7 @@ export const config = {
   ollama: {
     model: process.env.OLLAMA_MODEL || 'llama4',
     embedModel: process.env.OLLAMA_EMBED_MODEL || '',
-    baseUrl: process.env.OLLAMA_BASE_URL || 'http://localhost:11434'
+    baseUrl: process.env.OLLAMA_BASE_URL || 'http://localhost:11434',
   },
   temp: Number(process.env.LLM_TEMP || 1),
   max_tokens: Number(process.env.LLM_MAXTOK || 16384),
@@ -54,4 +54,4 @@ export const config = {
   transcription_provider: process.env.TRANSCRIPTION_PROVIDER || 'openai',
   assemblyai_api_key: process.env.ASSEMBLYAI_API_KEY || '',
   google_project_id: process.env.GOOGLE_CLOUD_PROJECT_ID || '',
-}
+};

@@ -1,8 +1,8 @@
-import type { FlashCard } from "../../lib/api";
+import type { FlashCard } from '../../lib/api';
 
 type Props = {
   items?: FlashCard[];
-  onAdd: (item: { kind: "flashcard" | "note"; title: string; content: string }) => void;
+  onAdd: (item: { kind: 'flashcard' | 'note'; title: string; content: string }) => void;
 };
 
 export default function FlashCards({ items = [], onAdd }: Props) {
@@ -33,15 +33,11 @@ export default function FlashCards({ items = [], onAdd }: Props) {
                   <div className="p-5">
                     <div className="flex items-start gap-3">
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-stone-50 text-sm font-medium leading-5 truncate">
-                          {title}
-                        </h4>
-                        <p className="text-stone-400 text-xs leading-5 mt-1 line-clamp-3">
-                          {content}
-                        </p>
+                        <h4 className="text-stone-50 text-sm font-medium leading-5 truncate">{title}</h4>
+                        <p className="text-stone-400 text-xs leading-5 mt-1 line-clamp-3">{content}</p>
                       </div>
                       <button
-                        onClick={() => onAdd({ kind: "flashcard", title, content })}
+                        onClick={() => onAdd({ kind: 'flashcard', title, content })}
                         className="shrink-0 h-9 w-9 inline-flex items-center justify-center rounded-xl bg-stone-900/70 border border-zinc-800 text-stone-400 hover:text-white hover:bg-stone-800 transition-colors"
                         aria-label="Add to bag"
                         title="Add to bag"

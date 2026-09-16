@@ -1,4 +1,4 @@
-version: "3.9"
+version: '3.9'
 
 services:
   backend:
@@ -16,7 +16,7 @@ services:
       - ./storage:/app/storage
       - ./.env:/app/.env:ro
     ports:
-      - "5000:5000"
+      - '5000:5000'
 
   frontend:
     env_file:
@@ -32,4 +32,4 @@ services:
     depends_on:
       - backend
     ports:
-      - "5173:5173"
+      - '5173:5173'

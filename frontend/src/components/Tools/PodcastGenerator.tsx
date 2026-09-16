@@ -1,129 +1,129 @@
-import { useState, useEffect } from "react"
-import { useLocation } from "react-router-dom"
-import { podcastStart, connectPodcastStream, type PodcastEvent } from "../../lib/api"
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { podcastStart, connectPodcastStream, type PodcastEvent } from '../../lib/api';
 
 export default function PodcastGenerator() {
-  const location = useLocation()
-  const [topic, setTopic] = useState("")
-  const [busy, setBusy] = useState(false)
-  const [status, setStatus] = useState("")
-  const [audioFile, setAudioFile] = useState<string | null>(null)
-  const [audioFilename, setAudioFilename] = useState<string | null>(null)
+  const location = useLocation();
+  const [topic, setTopic] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState('');
+  const [audioFile, setAudioFile] = useState<string | null>(null);
+  const [audioFilename, setAudioFilename] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if we were navigated here with a podcast already started
     if (location.state?.podcastPid) {
-      const { podcastPid, podcastTopic } = location.state
-      setTopic(podcastTopic || "")
-      setBusy(true)
-      setStatus("Connecting to podcast generation...")
+      const { podcastPid, podcastTopic } = location.state;
+      setTopic(podcastTopic || '');
+      setBusy(true);
+      setStatus('Connecting to podcast generation...');
 
       // Connect to the existing podcast stream
       const { close } = connectPodcastStream(podcastPid, (ev: PodcastEvent) => {
-        if (ev.type === "ready") {
-          setStatus("Connected, generating...")
+        if (ev.type === 'ready') {
+          setStatus('Connected, generating...');
         }
-        if (ev.type === "phase") {
-          setStatus(`Status: ${ev.value}`)
+        if (ev.type === 'phase') {
+          setStatus(`Status: ${ev.value}`);
         }
-        if (ev.type === "script") {
-          setStatus("Script generated, creating audio...")
+        if (ev.type === 'script') {
+          setStatus('Script generated, creating audio...');
         }
-        if (ev.type === "audio") {
-          const audioUrl = ev.file || ev.staticUrl || ""
-          setAudioFile(audioUrl)
-          setAudioFilename(ev.filename || "podcast.mp3")
-          setStatus("Ready - Audio file is ready!")
+        if (ev.type === 'audio') {
+          const audioUrl = ev.file || ev.staticUrl || '';
+          setAudioFile(audioUrl);
+          setAudioFilename(ev.filename || 'podcast.mp3');
+          setStatus('Ready - Audio file is ready!');
         }
-        if (ev.type === "done") {
-          setStatus("Done")
-          setBusy(false)
+        if (ev.type === 'done') {
+          setStatus('Done');
+          setBusy(false);
           setTimeout(() => {
-            close()
-          }, 1000)
+            close();
+          }, 1000);
         }
-        if (ev.type === "error") {
-          setStatus(`Error: ${ev.error}`)
-          close()
-          setBusy(false)
+        if (ev.type === 'error') {
+          setStatus(`Error: ${ev.error}`);
+          close();
+          setBusy(false);
         }
-      })
+      });
 
       const timeout = setTimeout(() => {
-        setStatus("Error: Timeout - generation took too long")
-        setBusy(false)
-        close()
-      }, 120000)
+        setStatus('Error: Timeout - generation took too long');
+        setBusy(false);
+        close();
+      }, 120000);
 
       return () => {
-        clearTimeout(timeout)
-        close()
-      }
+        clearTimeout(timeout);
+        close();
+      };
     }
-  }, [location.state])
+  }, [location.state]);
 
   const onGenerate = async () => {
-    if (!topic.trim() || busy) return
+    if (!topic.trim() || busy) return;
 
-    setBusy(true)
-    setStatus("Starting…")
-    setAudioFile(null)
-    setAudioFilename(null)
+    setBusy(true);
+    setStatus('Starting…');
+    setAudioFile(null);
+    setAudioFilename(null);
 
     try {
-      const { pid } = await podcastStart({ topic })
+      const { pid } = await podcastStart({ topic });
 
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       const { close } = connectPodcastStream(pid, (ev: PodcastEvent) => {
-        if (ev.type === "ready") {
-          setStatus("Connected, generating...")
+        if (ev.type === 'ready') {
+          setStatus('Connected, generating...');
         }
-        if (ev.type === "phase") {
-          setStatus(`Status: ${ev.value}`)
+        if (ev.type === 'phase') {
+          setStatus(`Status: ${ev.value}`);
         }
-        if (ev.type === "script") {
-          setStatus("Script generated, creating audio...")
+        if (ev.type === 'script') {
+          setStatus('Script generated, creating audio...');
         }
-        if (ev.type === "audio") {
-          const audioUrl = ev.file || ev.staticUrl || ""
+        if (ev.type === 'audio') {
+          const audioUrl = ev.file || ev.staticUrl || '';
 
-          setAudioFile(audioUrl)
-          setAudioFilename(ev.filename || "podcast.mp3")
-          setStatus("Ready - Audio file is ready!")
+          setAudioFile(audioUrl);
+          setAudioFilename(ev.filename || 'podcast.mp3');
+          setStatus('Ready - Audio file is ready!');
         }
-        if (ev.type === "done") {
-          setStatus("Done")
-          setBusy(false)
+        if (ev.type === 'done') {
+          setStatus('Done');
+          setBusy(false);
           setTimeout(() => {
-            close()
-          }, 1000)
+            close();
+          }, 1000);
         }
-        if (ev.type === "error") {
-          setStatus(`Error: ${ev.error}`)
-          close()
-          setBusy(false)
+        if (ev.type === 'error') {
+          setStatus(`Error: ${ev.error}`);
+          close();
+          setBusy(false);
         }
-      })
+      });
 
       const timeout = setTimeout(() => {
-        setStatus("Error: Timeout - generation took too long")
-        setBusy(false)
-        close()
-      }, 120000)
+        setStatus('Error: Timeout - generation took too long');
+        setBusy(false);
+        close();
+      }, 120000);
 
-      const originalClose = close
+      const originalClose = close;
       const closeWithCleanup = () => {
-        clearTimeout(timeout)
-        originalClose()
-      }
+        clearTimeout(timeout);
+        originalClose();
+      };
 
-      return { close: closeWithCleanup }
+      return { close: closeWithCleanup };
     } catch (e: unknown) {
-      setStatus((e as Error).message || "Failed")
-      setBusy(false)
+      setStatus((e as Error).message || 'Failed');
+      setBusy(false);
     }
-  }
+  };
 
   return (
     <div className="group rounded-2xl bg-stone-950 border border-zinc-800 p-4 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
@@ -145,10 +145,10 @@ export default function PodcastGenerator() {
           <div className="relative flex-1">
             <input
               value={topic}
-              onChange={(e) => setTopic(e.target.value)}
+              onChange={e => setTopic(e.target.value)}
               placeholder="Enter topic or paste notes..."
               className="w-full px-4 py-3 pr-16 rounded-xl bg-stone-900/70 border border-zinc-700 text-white placeholder-zinc-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-300"
-              onKeyDown={(e) => e.key === "Enter" && onGenerate()}
+              onKeyDown={e => e.key === 'Enter' && onGenerate()}
             />
           </div>
           <button
@@ -156,7 +156,7 @@ export default function PodcastGenerator() {
             disabled={busy || !topic.trim()}
             className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium transition-all duration-300"
           >
-            {busy ? "Generating…" : "Generate"}
+            {busy ? 'Generating…' : 'Generate'}
           </button>
         </div>
 
@@ -164,8 +164,7 @@ export default function PodcastGenerator() {
           <div className="p-4 rounded-xl bg-purple-950/40 border border-purple-800/40 text-purple-200 font-medium">
             {status}
             <div className="text-xs mt-2 opacity-70">
-              Audio file: {audioFile ? 'Set' : 'Not set'} |
-              Busy: {busy ? 'Yes' : 'No'}
+              Audio file: {audioFile ? 'Set' : 'Not set'} | Busy: {busy ? 'Yes' : 'No'}
             </div>
           </div>
         )}
@@ -174,18 +173,14 @@ export default function PodcastGenerator() {
           <div className="space-y-3">
             <div className="p-4 rounded-xl bg-stone-900/70 border border-zinc-700">
               <div className="text-sm text-stone-400 mb-2">Preview:</div>
-              <audio
-                controls
-                className="w-full"
-                src={audioFile}
-              >
+              <audio controls className="w-full" src={audioFile}>
                 Your browser does not support the audio element.
               </audio>
             </div>
 
             <a
               href={audioFile}
-              download={audioFilename || "podcast.mp3"}
+              download={audioFilename || 'podcast.mp3'}
               className="block p-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-medium text-center transition-all duration-300 shadow-lg hover:shadow-emerald-500/20"
             >
               Download Podcast
@@ -194,11 +189,9 @@ export default function PodcastGenerator() {
         )}
 
         {!audioFile && !busy && (
-          <div className="text-xs text-stone-500 text-center p-2">
-            Click Generate to create a podcast
-          </div>
+          <div className="text-xs text-stone-500 text-center p-2">Click Generate to create a podcast</div>
         )}
       </div>
     </div>
-  )
+  );
 }

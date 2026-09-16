@@ -1,7 +1,7 @@
-import { ToolIO } from "../types"
+import type { ToolIO } from '../types';
 export const nopTool: ToolIO = {
-  name: "nop",
-  desc: "no operation",
+  name: 'nop',
+  desc: 'no operation',
   schema: {},
-  run: async () => ({ ok: true })
-}
+  run: async () => ({ ok: true }),
+};

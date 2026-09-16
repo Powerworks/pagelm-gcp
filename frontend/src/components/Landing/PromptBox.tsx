@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
 type Props = {
   value: string;
@@ -23,7 +23,6 @@ export default function PromptBox({
   onDragOver,
   onDrop,
 }: Props) {
-
   return (
     <div
       className="rounded-3xl bg-stone-950 border border-stone-900 shadow-[inset_0_3px_15px] shadow-stone-900 flex items-start rounded-bl-none rounded-br-none md:rounded-br-3xl"
@@ -34,7 +33,12 @@ export default function PromptBox({
         {stagedFileName && (
           <div className="mb-3 inline-flex items-center gap-3 bg-stone-900/60 border border-stone-800 rounded-2xl px-3 py-2">
             <div className="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-400/40 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 text-rose-300" fill="currentColor">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                className="w-6 h-6 text-rose-300"
+                fill="currentColor"
+              >
                 <path d="M9 2a1 1 0 0 0-1 1v4H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2V3a1 1 0 0 0-1-1H9Zm5 5H10V4h4v3Z" />
               </svg>
             </div>
@@ -42,7 +46,11 @@ export default function PromptBox({
               <span className="text-stone-100 text-sm">{stagedFileName}</span>
               <span className="text-stone-400 text-xs">Attached</span>
             </div>
-            <button onClick={onRemoveFile} className="ml-2 text-stone-300 hover:text-white p-1 rounded-lg hover:bg-stone-800" aria-label="Remove file">
+            <button
+              onClick={onRemoveFile}
+              className="ml-2 text-stone-300 hover:text-white p-1 rounded-lg hover:bg-stone-800"
+              aria-label="Remove file"
+            >
               ✕
             </button>
           </div>
@@ -53,9 +61,9 @@ export default function PromptBox({
           placeholder="Ask me to teach you anything..."
           className="w-full text-stone-200 bg-transparent rounded-2xl p-2.5 outline-none resize-none leading-6 min-h-[40px]"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
+          onChange={e => onChange(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
               onSend();
             }
@@ -70,7 +78,7 @@ export default function PromptBox({
           aria-label="Attach file"
           onClick={onPickFile}
           disabled={busy}
-          title={stagedFileName ?? "Upload files"}
+          title={stagedFileName ?? 'Upload files'}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
             <path
@@ -86,9 +94,16 @@ export default function PromptBox({
           disabled={busy || !value.trim()}
           className="rounded-full bg-stone-900 hover:bg-stone-800 duration-300 transition-all hover:text-white p-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Send"
-          title={busy ? "Please wait..." : "Send"}
+          title={busy ? 'Please wait...' : 'Send'}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-5"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
           </svg>
         </button>

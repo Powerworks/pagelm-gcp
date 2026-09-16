@@ -1,15 +1,31 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate, useSearchParams, Link } from "react-router-dom";
-import { quizStart, connectQuizStream, type QuizEvent } from "../lib/api";
-import LoadingIndicator from "../components/Chat/LoadingIndicator";
-import TopicBar from "../components/Quiz/TopicBar";
-import QuizHeader from "../components/Quiz/QuizHeader";
-import QuestionCard from "../components/Quiz/QuestionCard";
-import ResultsPanel from "../components/Quiz/ResultsPanel";
-import ReviewModal from "../components/Quiz/ReviewModal";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { quizStart, connectQuizStream, type QuizEvent } from '../lib/api';
+import LoadingIndicator from '../components/Chat/LoadingIndicator';
+import TopicBar from '../components/Quiz/TopicBar';
+import QuizHeader from '../components/Quiz/QuizHeader';
+import QuestionCard from '../components/Quiz/QuestionCard';
+import ResultsPanel from '../components/Quiz/ResultsPanel';
+import ReviewModal from '../components/Quiz/ReviewModal';
 
-export type Question = { id: number; question: string; options: string[]; correct: number; hint: string; explanation: string; imageHtml?: string };
-export type UA = { questionId: number; selectedAnswer: number; correct: boolean; question: string; selectedOption: string; correctOption: string; explanation: string };
+export type Question = {
+  id: number;
+  question: string;
+  options: string[];
+  correct: number;
+  hint: string;
+  explanation: string;
+  imageHtml?: string;
+};
+export type UA = {
+  questionId: number;
+  selectedAnswer: number;
+  correct: boolean;
+  question: string;
+  selectedOption: string;
+  correctOption: string;
+  explanation: string;
+};
 
 function takeQuizArray(a: unknown): Question[] {
   if (Array.isArray(a)) return a as Question[];
@@ -22,8 +38,8 @@ export default function Quiz() {
   const navigate = useNavigate();
   const location = useLocation() as any;
 
-  const passedTopic = (location?.state && location.state.topic) || "";
-  const initialTopic = search.get("topic") || passedTopic || "";
+  const passedTopic = (location?.state && location.state.topic) || '';
+  const initialTopic = search.get('topic') || passedTopic || '';
 
   const [topic, setTopic] = useState(initialTopic);
   const [qs, setQs] = useState<Question[]>([]);
@@ -44,10 +60,42 @@ export default function Quiz() {
   const q = qs[idx];
 
   const percentage = useMemo(() => (total ? Math.round((score / total) * 100) : 0), [score, total]);
-  const resultVisual = useMemo(() => { if (percentage >= 90) return { msg: "Excellent! You have mastered this topic!", cls: "bg-green-900/20 border border-green-700 text-green-200", icon: "🏆" }; if (percentage >= 70) return { msg: "Great job! You have a solid understanding.", cls: "bg-blue-900/20 border border-blue-700 text-blue-200", icon: "🎉" }; if (percentage >= 50) return { msg: "Good effort! Review the concepts and try again.", cls: "bg-yellow-900/20 border border-yellow-700 text-yellow-200", icon: "📚" }; return { msg: "Keep studying! Practice makes perfect.", cls: "bg-red-900/20 border border-red-700 text-red-200", icon: "💪" }; }, [percentage]);
+  const resultVisual = useMemo(() => {
+    if (percentage >= 90)
+      return {
+        msg: 'Excellent! You have mastered this topic!',
+        cls: 'bg-green-900/20 border border-green-700 text-green-200',
+        icon: '🏆',
+      };
+    if (percentage >= 70)
+      return {
+        msg: 'Great job! You have a solid understanding.',
+        cls: 'bg-blue-900/20 border border-blue-700 text-blue-200',
+        icon: '🎉',
+      };
+    if (percentage >= 50)
+      return {
+        msg: 'Good effort! Review the concepts and try again.',
+        cls: 'bg-yellow-900/20 border border-yellow-700 text-yellow-200',
+        icon: '📚',
+      };
+    return {
+      msg: 'Keep studying! Practice makes perfect.',
+      cls: 'bg-red-900/20 border border-red-700 text-red-200',
+      icon: '💪',
+    };
+  }, [percentage]);
 
-  useEffect(() => () => { if (closeRef.current) closeRef.current(); }, []);
-  useEffect(() => { if (!initialTopic) return; start(initialTopic); }, [initialTopic]);
+  useEffect(
+    () => () => {
+      if (closeRef.current) closeRef.current();
+    },
+    []
+  );
+  useEffect(() => {
+    if (!initialTopic) return;
+    start(initialTopic);
+  }, [initialTopic]);
 
   function resetQuestionState() {
     setIdx(0);
@@ -71,22 +119,22 @@ export default function Quiz() {
     try {
       const s = await quizStart(trimmed);
       const { close } = connectQuizStream(s.quizId, (ev: QuizEvent) => {
-        if (ev.type === "quiz") {
+        if (ev.type === 'quiz') {
           const arr = takeQuizArray(ev.quiz).map(q => ({
             ...q,
-            correct: typeof q.correct === "number" ? Math.max(0, q.correct - 1) : 0
+            correct: typeof q.correct === 'number' ? Math.max(0, q.correct - 1) : 0,
           }));
           setQs(arr);
           resetQuestionState();
           setConnecting(false);
         }
-        if (ev.type === "done" || ev.type === "error") {
+        if (ev.type === 'done' || ev.type === 'error') {
           setConnecting(false);
         }
       });
       closeRef.current = close;
 
-      if (search.get("topic") !== trimmed) {
+      if (search.get('topic') !== trimmed) {
         navigate(`/quiz?topic=${encodeURIComponent(trimmed)}`, {
           replace: true,
           state: { topic: trimmed },
@@ -97,7 +145,9 @@ export default function Quiz() {
     }
   }
 
-  const onSelect = (i: number) => { if (!showExp) setSelected(i); };
+  const onSelect = (i: number) => {
+    if (!showExp) setSelected(i);
+  };
 
   const onNext = () => {
     if (selected == null || !q) return;
@@ -125,18 +175,32 @@ export default function Quiz() {
     }, 350);
   };
 
-  const newTopic = () => { setDone(false); setQs([]); setTopic(""); setAnswers([]); resetQuestionState(); setScore(0); };
+  const newTopic = () => {
+    setDone(false);
+    setQs([]);
+    setTopic('');
+    setAnswers([]);
+    resetQuestionState();
+    setScore(0);
+  };
 
   return (
     <div className="flex flex-col min-h-screen w-full px-4 lg:pl-28 lg:pr-4">
       <div className="w-full max-w-4xl mx-auto p-4 pt-8 pb-24 my-auto">
-
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <Link to='/'
+            <Link
+              to="/"
               className="p-2 rounded-xl bg-stone-950 border border-zinc-800 hover:bg-stone-900 transition-colors"
-              aria-label="Back">
-              <svg viewBox="0 0 24 24" className="size-5 text-stone-300" fill="none" stroke="currentColor" strokeWidth="1.5">
+              aria-label="Back"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="size-5 text-stone-300"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
               </svg>
             </Link>
@@ -148,20 +212,18 @@ export default function Quiz() {
         </div>
 
         {qs.length === 0 && !connecting && !done && (
-          <TopicBar
-            value={topic}
-            onChange={setTopic}
-            onStart={() => start(topic)}
-          />
+          <TopicBar value={topic} onChange={setTopic} onStart={() => start(topic)} />
         )}
 
         {connecting && (
-          <div className="mt-10"><LoadingIndicator label="Building a quiz for you…" /></div>
+          <div className="mt-10">
+            <LoadingIndicator label="Building a quiz for you…" />
+          </div>
         )}
 
         {qs.length > 0 && !done && q && (
           <>
-            <QuizHeader topic={topic || "Quiz"} idx={idx} total={total} score={score} />
+            <QuizHeader topic={topic || 'Quiz'} idx={idx} total={total} score={score} />
             <QuestionCard
               q={q}
               selected={selected}
@@ -182,15 +244,18 @@ export default function Quiz() {
             percentage={percentage}
             visual={resultVisual}
             answers={answers}
-            onRetake={() => { resetQuestionState(); setScore(0); setDone(false); setAnswers([]); }}
+            onRetake={() => {
+              resetQuestionState();
+              setScore(0);
+              setDone(false);
+              setAnswers([]);
+            }}
             onReview={() => setReviewOpen(true)}
             onNewTopic={newTopic}
           />
         )}
 
-        {reviewOpen && (
-          <ReviewModal answers={answers} onClose={() => setReviewOpen(false)} />
-        )}
+        {reviewOpen && <ReviewModal answers={answers} onClose={() => setReviewOpen(false)} />}
       </div>
     </div>
   );

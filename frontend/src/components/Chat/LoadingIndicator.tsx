@@ -1,6 +1,4 @@
-export default function LoadingIndicator({
-  label = "Preparing your answer…",
-}: { label?: string }) {
+export default function LoadingIndicator({ label = 'Preparing your answer…' }: { label?: string }) {
   return (
     <div className="w-full max-w-4xl rounded-2xl p-6 border border-stone-900 bg-stone-950">
       <div className="flex items-center gap-4">

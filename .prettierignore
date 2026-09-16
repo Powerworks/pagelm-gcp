@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+package-lock.json
+
+# Build outputs
+dist
+build
+*.log
+
+# IDE
+.idea
+.vscode
+*.swp
+
+# OS
+.DS_Store
+
+# CI/Config files with non-standard formatting
+.github/ISSUE_TEMPLATE/config.yml
+.github/ISSUE_TEMPLATE/bug_report.yml
+.github/ISSUE_TEMPLATE/feature_request.yml
+.github/pull_request_template.md
+.github/dependabot.bak.yml
+
+# Frontend
+frontend

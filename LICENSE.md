@@ -27,7 +27,9 @@ Subject to compliance with all terms and conditions of this License, the copyrig
 ## Conditions and Restrictions
 
 ### 1. Educational Use Exemption
+
 Educational institutions and individual learners are permitted to use PageLM **free of charge** for bona fide educational purposes, including but not limited to:
+
 - Classroom instruction and coursework
 - Academic research and study
 - Student projects and assignments
@@ -36,7 +38,9 @@ Educational institutions and individual learners are permitted to use PageLM **f
 This exemption applies only to non-commercial educational activities and does not extend to commercial training programs, paid courses, or any educational services offered for profit.
 
 ### 2. Prohibition on Redistribution
+
 **Redistribution of the Software, in whole or in part, in source or binary form, is strictly prohibited** without express written permission from the copyright holders. This prohibition includes, but is not limited to:
+
 - Publishing or distributing copies of the Software on public repositories, package managers, or distribution platforms
 - Bundling the Software with other software or products
 - Sharing compiled binaries or executable versions
@@ -44,10 +48,13 @@ This exemption applies only to non-commercial educational activities and does no
 **Exception:** You may retain this License file with any authorized copies solely for the purpose of understanding the terms under which you received the Software.
 
 ### 3. Non-Commercial Use Restriction
+
 The Software may **not be sold, sublicensed, or included in any product or service for commercial purposes** without prior written consent of the copyright holders and execution of a separate commercial licensing agreement.
 
 ### 4. Revenue Sharing Requirement
+
 If the Software, or any Derivative Work thereof, is used for Commercial Use:
+
 - A revenue-sharing agreement **must be executed with the copyright holders prior to any commercial distribution, deployment, public release, or commercial operation**.
 - The terms of such revenue-sharing agreement shall be negotiated in good faith and documented in writing.
 - Any Commercial Use without a duly executed revenue-sharing agreement constitutes a **material breach and immediate termination of this License**.
@@ -55,30 +62,38 @@ If the Software, or any Derivative Work thereof, is used for Commercial Use:
 - The copyright holders reserve all rights to seek legal remedies, including but not limited to injunctive relief, monetary damages, disgorgement of profits, and attorney's fees.
 
 ### 5. Community Contributions
+
 Community members are encouraged to contribute to the Software by:
+
 - Submitting pull requests (PRs) for bug fixes, improvements, or new features
 - Reporting issues and providing feedback
 - Participating in community discussions
 
 **By submitting a contribution, you agree that:**
+
 - Your contributions are original work or you have the right to submit them
 - You grant the copyright holders a perpetual, worldwide, non-exclusive, royalty-free license to use, modify, and incorporate your contributions
 - Your contributions are subject to the same license terms as the Software
 - You waive any moral rights or attribution requirements beyond what is provided in this License
 
 ### 6. Attribution Requirement
+
 Any public use, demonstration, publication, or Derivative Work of the Software must:
+
 - Clearly and conspicuously credit the original authors
 - Include attribution in all user-facing materials, including but not limited to: user interfaces, documentation, product websites, marketing materials, and published papers
 - Maintain all copyright notices and license information
 
 ### 7. Partial Use Clause
+
 This License applies to the Software **in whole or in part**. Use of any portion, code snippet, algorithm, design pattern, or Derivative Work of the Software in a commercial product or service **constitutes Commercial Use** and is subject to all commercial licensing, revenue-sharing, and permission requirements set forth herein.
 
 ### 8. Termination and Enforcement
+
 Any violation of the terms and conditions of this License results in **automatic termination of all rights granted hereunder**, effective immediately and without notice.
 
 Upon termination:
+
 - You must immediately cease all use, copying, modification, and distribution of the Software
 - You must destroy all copies of the Software in your possession or control
 - The copyright holders retain all rights to pursue legal remedies, including but not limited to:
@@ -91,7 +106,9 @@ Upon termination:
 Termination does not release you from any financial obligations, liabilities, or damages arising from prior or ongoing violations.
 
 ### 9. Reservation of Rights
+
 All rights not expressly granted in this License are reserved by the copyright holders. This includes, without limitation:
+
 - Patent rights
 - Trademark rights
 - Trade secret rights
@@ -99,6 +116,7 @@ All rights not expressly granted in this License are reserved by the copyright h
 - Rights to sublicense or transfer the Software
 
 ### 10. Governing Law and Jurisdiction
+
 This License shall be governed by and construed in accordance with the laws of the jurisdiction in which the copyright holders reside, without regard to conflicts of law principles. Any disputes arising under this License shall be subject to the exclusive jurisdiction of the courts in that jurisdiction.
 
 ---

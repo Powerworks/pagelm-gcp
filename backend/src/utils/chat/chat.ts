@@ -1,17 +1,17 @@
-import { randomUUID } from "crypto";
-import db from "../database/keyv";
+import { randomUUID } from 'crypto';
+import db from '../database/keyv';
 
 export type ChatMeta = { id: string; title: string; at: number };
-export type ChatMsg = { role: "user" | "assistant"; content: any; at: number };
+export type ChatMsg = { role: 'user' | 'assistant'; content: any; at: number };
 
 export async function mkChat(t: string) {
   const id = randomUUID();
   const c: ChatMeta = { id, title: t.slice(0, 60), at: Date.now() };
   await db.set(`chat:${id}`, c);
   await db.set(`msgs:${id}`, [] as ChatMsg[]);
-  const idx = ((await db.get("chat:index")) as string[]) || [];
+  const idx = ((await db.get('chat:index')) as string[]) || [];
   idx.unshift(id);
-  await db.set("chat:index", idx.slice(0, 1000));
+  await db.set('chat:index', idx.slice(0, 1000));
   return c;
 }
 
@@ -32,7 +32,7 @@ export async function addMsg(id: string, m: ChatMsg) {
 }
 
 export async function listChats(n = 50) {
-  const idx = ((await db.get("chat:index")) as string[]) || [];
+  const idx = ((await db.get('chat:index')) as string[]) || [];
   const out: ChatMeta[] = [];
   for (const id of idx.slice(0, n)) {
     const c = (await db.get(`chat:${id}`)) as ChatMeta | undefined;

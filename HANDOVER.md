@@ -67,6 +67,7 @@ Per the brief, PageLM's default persistence is flat JSON files on local disk
 Cloud Run's ephemeral containers as-is.
 
 Steps:
+
 1. Create a GCS bucket in the chosen project (single-user tool, so a small
    bucket in a nearby region is fine — pick based on where you are, cost is
    negligible either way).
@@ -82,7 +83,7 @@ Steps:
 3. Confirm read/write actually works through the FUSE mount from inside a
    deployed revision — upload a doc, confirm a file lands in the bucket.
 4. Separately, GCS is also needed for uploaded docs and generated podcast
-   audio per the brief — decide whether that's the *same* bucket as the FUSE
+   audio per the brief — decide whether that's the _same_ bucket as the FUSE
    mount or a second one. Simplest: one bucket, FUSE-mounted, used for
    everything, since PageLM already treats storage as one flat filesystem
    tree.
@@ -229,7 +230,7 @@ add a rule with "Policy values: Allow all", then Save. **IAM policy changes
 take 2–5 minutes to propagate** across Cloud Run controllers — retry the
 binding after waiting, don't assume it failed permanently.
 
-Note this cuts against Phase 4 above (which calls for *no*
+Note this cuts against Phase 4 above (which calls for _no_
 `--allow-unauthenticated` and IAM-gated access only) — the frontend was
 deployed publicly as a pragmatic shortcut this session. Worth revisiting
 before this is treated as done end-to-end: decide whether the frontend
@@ -247,7 +248,7 @@ these cost real time to rediscover:
   content to a temp file first (`Write`/`printf`), then pass `--file=path` or
   redirect from that file instead of trying to inline it.
 - **Grant IAM roles upfront on a fresh project, don't wait for failures to
-  reveal them.** A new project's default service accounts do *not* have the
+  reveal them.** A new project's default service accounts do _not_ have the
   roles needed for a Cloud Build → Artifact Registry → Cloud Run pipeline.
   Grant these before the first build attempt (saves a full failed-build
   cycle each time one's missing):

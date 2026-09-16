@@ -1,5 +1,5 @@
 <div align="center">
-  
+
 <img width="full" height="auto" alt="pagelm" src="https://github.com/user-attachments/assets/d3133be1-1931-4132-9301-3596ebb21122" />
 
 # PageLM
@@ -91,15 +91,15 @@ The platform provides a modern interface for students, educators, and researcher
 
 ## 🛠️ Technology Stack
 
-| Component      | Technology                               |
-| -------------- | ---------------------------------------- |
-| **Backend**    | Node.js, TypeScript, LangChain, Langraph |
-| **Frontend**   | Vite, React, TailwindCSS                 |
-| **Database**   | JSON (default), optional vector DB       |
-| **AI/ML**      | Multiple LLM providers, embeddings       |
+| Component      | Technology                                                                               |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| **Backend**    | Node.js, TypeScript, LangChain, Langraph                                                 |
+| **Frontend**   | Vite, React, TailwindCSS                                                                 |
+| **Database**   | JSON (default), optional vector DB                                                       |
+| **AI/ML**      | Multiple LLM providers, embeddings                                                       |
 | **Audio**      | Edge TTS, ElevenLabs, Google TTS, Speech SDK (OpenAI, Cartesia, Hume, MiniMax + 10 more) |
-| **Deployment** | Docker, Docker Compose                   |
-| **Docs**       | pdf-lib, mammoth, pdf-parse              |
+| **Deployment** | Docker, Docker Compose                                                                   |
+| **Docs**       | pdf-lib, mammoth, pdf-parse                                                              |
 
 ---
 

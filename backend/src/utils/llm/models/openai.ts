@@ -1,6 +1,6 @@
-import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai'
-import { wrapChat } from './util'
-import type { MkLLM, MkEmb, EmbeddingsLike } from './types'
+import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai';
+import { wrapChat } from './util';
+import type { MkLLM, MkEmb, EmbeddingsLike } from './types';
 
 export const makeLLM: MkLLM = (cfg: any) => {
   const m = new ChatOpenAI({
@@ -10,10 +10,10 @@ export const makeLLM: MkLLM = (cfg: any) => {
     maxTokens: cfg.max_tokens,
     configuration: {
       baseURL: process.env.OPENAI_BASE_URL,
-    }
-  })
-  return wrapChat(m)
-}
+    },
+  });
+  return wrapChat(m);
+};
 
 export const makeEmbeddings: MkEmb = (cfg: any): EmbeddingsLike => {
   return new OpenAIEmbeddings({
@@ -21,6 +21,6 @@ export const makeEmbeddings: MkEmb = (cfg: any): EmbeddingsLike => {
     apiKey: cfg.openai || process.env.OPENAI_EMBED_API_KEY,
     configuration: {
       baseURL: process.env.OPENAI_EMBED_BASE_URL,
-    }
-  })
-}
+    },
+  });
+};

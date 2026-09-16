@@ -9,7 +9,9 @@ export default function BagFab({ count, onClick }: { count: number; onClick: () 
           loading="lazy"
           decoding="async"
         />
-        <div className={`absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full h-6 w-6 items-center justify-center font-bold ${count ? "flex" : "hidden"}`}>
+        <div
+          className={`absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full h-6 w-6 items-center justify-center font-bold ${count ? 'flex' : 'hidden'}`}
+        >
           {count}
         </div>
       </div>

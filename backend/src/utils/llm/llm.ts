@@ -1,6 +1,6 @@
-import { makeModels } from './models'
+import { makeModels } from './models';
 
-const { llm, embeddings } = makeModels()
+const { llm, embeddings } = makeModels();
 
-export default llm
-export { embeddings }
+export default llm;
+export { embeddings };

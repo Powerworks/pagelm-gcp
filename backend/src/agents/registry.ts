@@ -1,12 +1,12 @@
-import { Agent } from "./types"
+import type { Agent } from './types';
 
-const registry = new Map<string, Agent>()
+const registry = new Map<string, Agent>();
 
 export const reg = (a: Agent) => {
-  registry.set(a.id, a)
-  return a
-}
+  registry.set(a.id, a);
+  return a;
+};
 
-export const get = (id: string) => registry.get(id)
+export const get = (id: string) => registry.get(id);
 
-export const all = () => [...registry.values()]
+export const all = () => [...registry.values()];

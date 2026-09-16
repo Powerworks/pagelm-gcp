@@ -8,7 +8,7 @@ export type QuizLikeItem = {
 };
 
 export type GenSpecMCQ = {
-  type: "mcq";
+  type: 'mcq';
   count: number;
   difficulty?: string;
   style?: string;
@@ -18,7 +18,7 @@ export type GenSpecMCQ = {
 };
 
 export type GenSpecShort = {
-  type: "short";
+  type: 'short';
   count: number;
   difficulty?: string;
   style?: string;
@@ -40,7 +40,7 @@ export type ExamSectionSpec = {
 export type ExamSpec = {
   id: string;
   name: string;
-  scoring: "right-only" | "ij" | "curve-table";
+  scoring: 'right-only' | 'ij' | 'curve-table';
   curveTableId?: string;
   sections: ExamSectionSpec[];
   rubrics?: any[];
